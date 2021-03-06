@@ -107,3 +107,5 @@ namespace ImGui
     void MyFunction(const char* name, const MyMatrix44& v);
 }
 */
+
+#define IM_VEC2_CLASS_EXTRA

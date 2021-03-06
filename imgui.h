@@ -228,6 +228,8 @@ typedef signed   long long  ImS64;  // 64-bit signed integer (post C++11)
 typedef unsigned long long  ImU64;  // 64-bit unsigned integer (post C++11)
 #endif
 
+#include "../utility/point.h"
+
 // 2D vector (often used to store positions or sizes)
 struct ImVec2
 {
@@ -237,7 +239,18 @@ struct ImVec2
     float  operator[] (size_t idx) const    { IM_ASSERT(idx <= 1); return (&x)[idx]; }    // We very rarely use this [] operator, the assert overhead is fine.
     float& operator[] (size_t idx)          { IM_ASSERT(idx <= 1); return (&x)[idx]; }    // We very rarely use this [] operator, the assert overhead is fine.
 #ifdef IM_VEC2_CLASS_EXTRA
-    IM_VEC2_CLASS_EXTRA     // Define additional constructors and implicit cast operators in imconfig.h to convert back and forth between your math types and ImVec2.
+    // Define additional constructors and implicit cast operators in imconfig.h
+    // to convert back and forth between your math types and ImVec2.
+    ImVec2(vec2f p) {
+        x = p.x;
+        y = p.y;
+    }
+    ImVec2(vec2i p) {
+        x = p.x;
+        y = p.y;
+    }
+    operator vec2f() { return vec2f{x, y}; }
+    operator vec2i() { return vec2i{(int)x, (int)y}; }
 #endif
 };
 
@@ -1089,7 +1102,7 @@ enum ImGuiTabItemFlags_
 //    - Stretch Columns will share the remaining width.
 //   When ScrollX is on:
 //    - Table defaults to ImGuiTableFlags_ColumnsWidthFixed -> all Columns defaults to ImGuiTableColumnFlags_WidthFixed.
-//    - Columns sizing policy allowed: Fixed/Auto mostly! 
+//    - Columns sizing policy allowed: Fixed/Auto mostly!
 //    - Fixed Columns can be enlarged as needed. Table will show an horizontal scrollbar if needed.
 //    - Using Stretch columns OFTEN DOES NOT MAKE SENSE if ScrollX is on, UNLESS you have specified a value for 'inner_width' in BeginTable().
 // - Mixing up columns with different sizing policy is possible BUT can be tricky and has some side-effects and restrictions.
